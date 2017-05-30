@@ -5,8 +5,8 @@
  * @copyright   Copyright (c) 2008 Webligo Developments
  * @license     http://www.socialengine.com/license/
  */
-//error_reporting(E_ALL);
-//ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 // Check version
 if( version_compare(phpversion(), '5.2.11', '<') ) {
   printf('PHP 5.2.11 is required, you have %s', phpversion());
