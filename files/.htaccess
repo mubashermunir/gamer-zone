@@ -1,0 +1,72 @@
+
+# $Id: .htaccess 9977 2013-03-19 20:51:56Z john $
+
+<IfModule mod_rewrite.c>
+  Options +FollowSymLinks
+  RewriteEngine On
+
+  # Get rid of index.php
+  RewriteCond %{REQUEST_URI} /index\.php
+  RewriteRule (.*) index.php?rewrite=2 [L,QSA]
+
+# Redirect with www
+#RewriteCond %{HTTP_HOST} !^gamer-zone\.online [NC,OR]
+# Redirect to https
+#    With Cloudflare:
+#RewriteCond %{HTTP:CF-Visitor} '"scheme":"http"'
+#    Without Cloudflare:
+# RewriteCond %{HTTPS} off 
+#RewriteRule ^ https://gamer-zone.online%{REQUEST_URI} [NE,R=301,L]
+
+  # Rewrite all directory-looking urls
+  RewriteCond %{REQUEST_URI} /$
+  RewriteRule (.*) index.php?rewrite=1 [L,QSA]
+
+  # Try to route missing files
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} public\/ [OR]
+  RewriteCond %{REQUEST_FILENAME} \.(jpg|gif|png|ico|flv|htm|html|php|css|js)$
+  RewriteRule . - [L]
+  
+  # If the file doesn't exist, rewrite to index
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ index.php?rewrite=1 [L,QSA]
+
+</IfModule>
+
+# sends requests /index.php/path/to/module/ to "index.php"
+# AcceptPathInfo On
+
+# @todo This may not be effective in some cases
+FileETag Size
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript
+</IfModule>
+
+
+<IfModule mod_deflate.c>
+# Compress HTML, CSS, JavaScript, Text, XML and fonts
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE application/rss+xml
+AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+AddOutputFilterByType DEFLATE application/x-font
+AddOutputFilterByType DEFLATE application/x-font-opentype
+AddOutputFilterByType DEFLATE application/x-font-otf
+AddOutputFilterByType DEFLATE application/x-font-truetype
+AddOutputFilterByType DEFLATE application/x-font-ttf
+AddOutputFilterByType DEFLATE application/x-javascript
+AddOutputFilterByType DEFLATE application/xhtml+xml
+AddOutputFilterByType DEFLATE application/xml
+AddOutputFilterByType DEFLATE font/opentype
+AddOutputFilterByType DEFLATE font/otf
+AddOutputFilterByType DEFLATE font/ttf
+AddOutputFilterByType DEFLATE image/svg+xml
+AddOutputFilterByType DEFLATE image/x-icon
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/javascript
+AddOutputFilterByType DEFLATE text/plain
+AddOutputFilterByType DEFLATE text/xml
+</IfModule>
